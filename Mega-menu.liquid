@@ -1,0 +1,427 @@
+<link rel="stylesheet" href="{{ 'mega-menu.css' | asset_url }}" type="text/css" media="print" onload="this.media='all';onLoadStylesheet()">
+<script src="{{ 'mega-menu.js' | asset_url }}" defer="defer"></script>
+
+{% comment %}  Don't forget to add an overlay div  in theme.liquid <div onclick="overlayClose()" class="active_mobile_nav"></div> {% endcomment %}
+
+              
+            
+              
+{%- if section.settings.show_announcement -%}
+  {%- if section.settings.home_page_only == false or template.name == 'index' -%}            
+<div class="custom-announcement-bar" style="background: {{ section.settings.announcement_bg }} ;">
+  <div class="announcement-wrapper">
+    <span>{{ section.settings.announcement_text }}</span>
+</div>
+</div>
+{% endif %}
+  {% endif %}
+
+  
+<div class="header_container {% if section.settings.sticky_header %}sticky-header{%endif%}" style="background-color:{{ section.settings.background_color }};">
+  <div class="wrapper" style="max-width:{{ section.settings.max-width }}px;">
+<div class="main_header">
+   <div class="logo">
+      <a href="/">
+        <img class="logo_image" style="max-width:{{ section.settings.logo_width }}px;" src="{{ section.settings.logo_image | img_url: 'master' }}">
+      </a>
+    </div>
+    <ul class="nav-items">
+        {% for link in linklists[section.settings.Menus].links %}
+          {% assign child_list_handle = link.title | handle %}
+          <span>{% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 1 %}{% endif %}</span>
+          {% assign child_list_handle = link.title | handle %}
+          {% if link.links != blank %}
+            
+            <li class="{% if section.settings.check_1 and forloop.first %}mega_menu_active{%elsif section.settings.check_2 and forloop.index == 2 %}mega_menu_active {%elsif section.settings.check_3 and forloop.index == 3 %}mega_menu_active {%elsif section.settings.check_4 and forloop.index == 4 %}mega_menu_active {%elsif section.settings.check_5 and forloop.index == 5 %}mega_menu_active {%elsif section.settings.check_6 and forloop.index == 6 %}mega_menu_active {%elsif section.settings.check_7 and forloop.index == 7 %}mega_menu_active {%elsif section.settings.check_8 and forloop.index == 8 %}mega_menu_active{%else%}hidemega {%endif%}{% if linklists[child_list_handle].links != blank %}has_dropdown nav-links{%else%}site_nav_item{%endif%}"  {% if link.active %}id="active{% if link.childlink %}child-active{% endif %}"{% endif %}>
+              <a class="main_link" href="{{ link.url }}">
+            <span>
+            {{ link.title }}
+            </span>
+              </a>
+            <div class="mega-menu-inner">
+              <ul class="dropdown-itmems">
+                <div class="meganav_nav">
+                {% for childlink in link.links %}
+                  <li class="dropdown-item" {% if childlink.active %}id="active{% if childlink.child_active %}child-active{% endif %}"{% endif %}>
+                    <a class="childlink_link level-two" href="{{ childlink.url }}">
+                     <span> 
+                  {{ childlink.title }}
+                  </span>
+                    </a>
+                    <ul class="dropdown_two level-three">
+                  {% for grandchild_link in childlink.links %}  
+                    <li class="level-three-childs"><a href= "{{ grandchild_link.url }}">{{ grandchild_link.title }}</a></li>
+                  {% endfor %}
+                  </ul>
+                  </li>
+                  {% if section.blocks.size >= 1 %}
+             {% if forloop.last %}
+        {% for block in section.blocks %}
+          {% if block.type == "image" %}
+
+      {% assign linktitle = link.title | downcase %}
+      {% if linktitle == block.settings.collection_title %}
+          <li class="dropdown-item">
+            <div class="image_boxes_menu">
+            <a class="text-center" href="{{ block.settings.collection_link }}"> 
+              <div class="mega_image_box">
+              <img src="{{ block.settings.collection_img | img_url: 'master' }}" alt="">
+              </div>
+              <div class="mega_content">
+                <h3>{{ block.settings.collection_name }}</h3>
+                <p>{{ block.settings.collection_text }}</p>
+              </div>
+            </a>
+            </div>
+          </li>
+          {% endif %}
+            {% endif %}
+          {% endfor %}
+             {% endif %}
+      {% endif %}
+                {% endfor %}
+                  </div>
+              </ul>
+            </div>  
+            </li>
+          {% else %}
+            <li class="nav-links"{% if link.active %}id="active"{% endif %}>
+              <a class="main_link" href="{{ link.url }}">
+                <span>
+                  {{ link.title }}
+                </span>
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+  <div class="icons-container">
+  <div class="header__cart">
+                <a class="js-ajax-cart-drawer-trigger" href="/cart">
+                  {%- liquid
+          if cart == empty
+            render 'icon-cart-empty'
+          else
+            render 'icon-cart'
+          endif
+        -%}
+                <span class="js-ajax-cart-counter">{{ cart.item_count }}</span>
+                </a>
+            </div> 
+      <div class="Desktop-search-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </div>
+  </div>
+</div>
+  </div>
+</div>
+
+<section class="mobile-header-container">
+  <div class="header-wrapper">
+    <div onclick="toggleDropwown()" class="hamburger-menu">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#000000" viewBox="0 0 50 50" width="50px" height="50px"><path d="M 0 9 L 0 11 L 50 11 L 50 9 Z M 0 24 L 0 26 L 50 26 L 50 24 Z M 0 39 L 0 41 L 50 41 L 50 39 Z"/></svg>
+    </div>
+    <div class="logo">
+      <a href="/">
+        <img class="logo_image" src="https://cdn.shopify.com/s/files/1/0644/3240/6760/files/VIKINGSTORE-Logo_600x600_2x_6c7ccbf5-a38a-408b-84da-952e0ba0fab6.webp?v=1664361658">
+      </a>
+    </div>
+    <div class="cart">
+      
+        <div class="header__cart">
+                <a class="js-ajax-cart-drawer-trigger" href="#">
+                  {%- liquid
+          if cart == empty
+            render 'icon-cart-empty'
+          else
+            render 'icon-cart'
+          endif
+        -%}
+                    <span class="js-ajax-cart-counter">{{ cart.item_count }}</span>
+                </a>
+            </div> 
+      <div class="search-icon">
+        <svg class="icon icon-search" viewBox="0 0 24 24"><path d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.39zM11 18a7 7 0 1 1 7-7 7 7 0 0 1-7 7z"></path></svg>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-menu"> 
+    <div onclick="closeNav()" class="close-nav"> 
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
+          <ul class="mobile-nav-items">
+        {% for link in linklists[section.settings.Menus].links %}
+          {% assign child_list_handle = link.title | handle %}
+          {% if link.links != blank %}
+            <li class="{% if linklists[child_list_handle].links != blank %}has_mobile_dropdown mobile-nav-links{%else%}site_nav_item{%endif%}"  {% if link.active %}id="active{% if link.childlink %}child-active{% endif %}"{% endif %}>
+              <a class="mobile-main_link"  href="{{ link.url }}">
+            <span>
+            {{ link.title }}
+            </span>
+              </a>
+             {% if section.settings.dropdown_icon == 'plus_icon' %}
+                <div class="expand-bar"></div>
+            {% elsif section.settings.dropdown_icon == 'arrow_icon' %}
+               <div class="expand-arrow right"></div>
+            {%endif%}
+            </li>
+          <div class="mobile-mega-menu-inner">
+              <ul class="mobile-dropdown-itmems">
+                <div class="mobile-meganav_nav">
+                {% for childlink in link.links %}
+                  <li class="mobile-dropdown-item" {% if childlink.active %}id="active{% if childlink.child_active %}child-active{% endif %}"{% endif %}>
+                    <a class="mobile-childlink_link level-two" href="{{ childlink.url }}">
+                     <span> 
+                  {{ childlink.title }}<!-- <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-arrow-right" viewBox="0 0 32 32"><path fill="#444" d="M7.667 3.795l1.797-1.684L24.334 16 9.464 29.889l-1.797-1.675L20.731 16z"></path></svg> -->
+                  </span>
+                    </a>
+                       {% if section.settings.dropdown_icon == 'plus_icon' %}
+                <div class="expand-bar"></div>
+            {% elsif section.settings.dropdown_icon == 'arrow_icon' %}
+               <div class="expand-arrow right"></div>
+            {%endif%} 
+                  </li>
+            <ul class="mobile-dropdown_two mobile-level-three">
+                  {% for grandchild_link in childlink.links %}  
+                    <li class="mobile-level-three-childs"><a href= "{{ grandchild_link.url }}">{{ grandchild_link.title }}</a></li>
+                  {% endfor %}
+                  </ul>
+                  {% if section.settings.mega_menu_images %}
+                   {% if section.blocks.size >= 1 %}
+             {% if forloop.last %}
+        {% for block in section.blocks %}
+          {% if block.type == "image" %}
+
+      {% assign linktitle = link.title | downcase %}
+      {% if linktitle == block.settings.collection_title %}
+          <li class="dropdown-item">
+            <div class="image_boxes_menu"> 
+              <a class="text-center" href="{{ block.settings.collection_link }}"> 
+                <div class="mega_image_box">
+                  <img src="{{ block.settings.collection_img | img_url: 'master' }}" alt="">
+                </div>
+                <div class="mega_content">
+                  <h3>{{ block.settings.collection_name }}</h3>
+                  <p>{{ block.settings.collection_text }}</p>
+                </div>
+              </a>
+            </div>
+          </li>
+           {% endif %}
+            {% endif %}
+              {% endfor %}
+                {% endif %}
+                  {% endif %}
+                    {% endif %}
+                      {% endfor %}
+                  </div>
+              </ul>
+            </div>
+          {% else %}
+            <li class="mobile-nav-links"{% if link.active %}id="active"{% endif %}>
+              <a class="mobile-main_link" href="{{ link.url }}">
+                <span>
+                  {{ link.title }}
+                </span>
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+        </ul>
+  </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+         {
+          "type": "header",
+          "content": "Announcement Bar"
+      	},
+        {
+          "type": "color",
+          "id": "announcement_bg",
+          "label": "Announcement Background Color"
+      	},
+        {
+        "type": "text",
+        "id": "announcement_text",
+        "label": "Announcement Text"
+      	},
+         {
+        "type": "checkbox",
+        "id": "show_announcement",
+        "label": "Show announcement",
+        "default": false
+        },
+        {
+        "type": "checkbox",
+        "id": "home_page_only",
+        "label": "Home page only",
+        "default": true
+          },
+         {
+          "type": "header",
+          "content": "Mega Menu"
+      	},
+        {
+        "id": "logo_image",
+        "type": "image_picker",
+        "label": "Logo Image"
+        },
+        {
+          "type": "range",
+          "id": "logo_width",
+          "min": 50,
+          "max": 250,
+          "step": 5,
+          "unit": "px",
+          "label": "Logo width",
+          "default": 150
+          },
+            {
+          "type": "range",
+          "id": "max-width",
+          "min": 1280,
+          "max": 1500,
+          "step": 20,
+          "unit": "px",
+          "label": "Mega Menu Max width",
+          "default": 1300
+          },
+        {
+        "type": "link_list",
+        "id": "Menus",
+        "label": "Menu"
+      	},
+         {
+        "type": "color",
+        "id": "background_color",
+        "label": "Header Background Color"
+      	},
+       {
+       "type": "select",
+       "id": "dropdown_icon",
+       "label": "Select Icon",
+      "options": [
+      {
+      "value": "plus_icon",
+      "label": "Plus icon"
+      },
+      {
+      "value": "arrow_icon",
+      "label": "Arrow icon"
+      }
+  ],
+  "default": "plus_icon"
+},
+{
+  "type": "checkbox",
+  "id": "sticky_header",
+  "label": "Sticky Header",
+  "default": true
+},
+{
+        "type": "header",
+        "content": "Mega menu enable on menu item"
+    },
+  	{
+        "type": "checkbox",
+        "id": "check_1",
+        "label": "Enable Megamenu for First link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_2",
+        "label": "Enable Megamenu for Second link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_3",
+        "label": "Enable Megamenu for Third link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_4",
+        "label": "Enable Megamenu for Fourth link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_5",
+        "label": "Enable Megamenu for Fifth link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_6",
+        "label": "Enable Megamenu for Sixth link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_7",
+        "label": "Enable Megamenu for Seventh link"
+    },
+	{
+        "type": "checkbox",
+        "id": "check_8",
+        "label": "Enable Megamenu for Eighth link"
+    },      
+{
+  "type": "checkbox",
+  "id": "mega_menu_images",
+  "label": "Mega menu Images",
+  "default": true
+}
+ 
+],
+    
+"blocks": [
+{
+  "type": "image",
+  "name": "Mega Menu Image",
+  "settings": [
+    {
+          "type": "text",
+          "id": "collection_title",
+          "label": "Main Menu Title",
+		  "info": "Put the name of the menu where do you want to see this Image"
+        },
+		{
+          "type": "image_picker",
+          "id": "collection_img",
+          "label": "Image",
+		  "info": "300 x 400px recommended"
+        },
+		{
+          "type": "text",
+          "id": "collection_name",
+          "label": "Heading"
+        },
+		{
+          "type": "text",
+          "id": "collection_text",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "collection_link",
+          "label": "Link"
+        }
+    
+  ]
+}
+],
+
+
+"presets" : [
+{
+"name" : "Mega menu Header"
+}]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
